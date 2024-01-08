@@ -42,6 +42,8 @@ class Form(App):
         # Footer to show keys
         yield Footer()
 
+        # TODO: how to make it so numbers always work?
+
         # Add the TabbedContent widget
         with TabbedContent(initial="encode"):
             with TabPane("Encode", id="encode"):
@@ -57,6 +59,7 @@ class Form(App):
             with TabPane("Generate", id="generate"):
                 yield Input(placeholder="Seed", id="seed")
                 yield TextArea(disabled=True, id="generated")
+                # TODO: how to make seed be the first input?
             with TabPane("Settings", id="settings"):
                 yield Input(placeholder="Alphabet", disabled=True, id="alphabet")
             with TabPane("About", id="about"):

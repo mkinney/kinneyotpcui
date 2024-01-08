@@ -10,3 +10,5 @@ Tips:
   * iTerm Hold the OPTION key.
   * Gnome Terminal Hold the SHIFT key.
   * Windows Terminal Hold the SHIFT key.
+
+TODO: Dockerfile
