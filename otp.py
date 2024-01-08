@@ -78,6 +78,12 @@ class Form(App):
         encoded = self.query_one("#encoded")
         message = self.query_one("#message")
 
+        # force upper
+        text.value = text.value.upper()
+        key.value = key.value.upper()
+
+        # TODO: only limit to what is in the otp.alphabet()?
+
         if len(text.value) <= len(key.value):
             self.otp.key = key.value
             message.value, encoded_text = self.otp.encode(text.value)
