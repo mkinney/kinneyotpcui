@@ -10,11 +10,6 @@ GENERATE = """
 Generate form goes here
 """
 
-# TODO: settings form
-SETTINGS = """
-Settings goes here
-"""
-
 ABOUT = """
 This code is similar to a 'one time pad' (aka Vernam Cipher) which can be used to encode/decode messages.
 
@@ -65,9 +60,14 @@ class Form(App):
             with TabPane("Generate", id="generate"):
                 yield Markdown(GENERATE)
             with TabPane("Settings", id="settings"):
-                yield Markdown(SETTINGS)
+                yield Input(placeholder="Alphabet", disabled=True, id="alphabet")
             with TabPane("About", id="about"):
                 yield Markdown(ABOUT)
+
+    def on_mount(self) -> None:
+        """Set the alphabet when the form starts."""
+        alphabet = self.query_one("#alphabet")
+        alphabet.value = "Alphabet: " + self.otp.alphabet
 
     def update_encoded(self):
         # Update the encoded value
