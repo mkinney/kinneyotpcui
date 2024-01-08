@@ -1,5 +1,5 @@
 from textual.app import App, ComposeResult
-from textual.widgets import Footer, Input, Label, Markdown, TabbedContent, TabPane
+from textual.widgets import Footer, Input, Label, Markdown, TabbedContent, TabPane, TextArea
 from textual.widget import Widget
 from textual.reactive import reactive
 
@@ -56,7 +56,7 @@ class Form(App):
                 yield Input(placeholder="", disabled=True, id="dmessage")
             with TabPane("Generate", id="generate"):
                 yield Input(placeholder="Seed", id="seed")
-                yield Input(placeholder="Generated", id="generated")
+                yield TextArea(disabled=True, id="generated")
             with TabPane("Settings", id="settings"):
                 yield Input(placeholder="Alphabet", disabled=True, id="alphabet")
             with TabPane("About", id="about"):
@@ -66,6 +66,8 @@ class Form(App):
         """Set the alphabet when the form starts."""
         alphabet = self.query_one("#alphabet")
         alphabet.value = "Alphabet: " + self.otp.alphabet
+        generated = self.query_one("#generated")
+        generated.show_line_numbers = False
 
     def update_encoded(self):
         # Update the encoded value
@@ -112,6 +114,7 @@ class Form(App):
     def update_generate(self):
         seed = self.query_one("#seed")
         generated = self.query_one("#generated")
+        generated.load_text("")
 
         seed_text = seed.value
         alphabet = self.otp.alphabet
@@ -126,7 +129,7 @@ class Form(App):
                         random_text += " "
                     if (i+1) % 25 == 0:
                         random_text += "\n"
-            generated.value = random_text
+            generated.load_text(random_text)
 
 
     def on_input_changed(self, event: Input.Changed) -> None:
