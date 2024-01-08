@@ -5,11 +5,6 @@ from textual.reactive import reactive
 
 from kinneyotp import OTP
 
-# TODO: decode form
-DECODE = """
-Decode form goes here
-"""
-
 # TODO: generate form
 GENERATE = """
 Generate form goes here
@@ -63,7 +58,10 @@ class Form(App):
                 yield Input(placeholder="Encoded", disabled=True, id="encoded")
                 yield Input(placeholder="", disabled=True, id="message")
             with TabPane("Decode", id="decode"):
-                yield Markdown(DECODE)
+                yield Input(placeholder="Text to decode", id="dtext")
+                yield Input(placeholder="Key", id="dkey")
+                yield Input(placeholder="Decoded", disabled=True, id="decoded")
+                yield Input(placeholder="", disabled=True, id="dmessage")
             with TabPane("Generate", id="generate"):
                 yield Markdown(GENERATE)
             with TabPane("Settings", id="settings"):
@@ -92,9 +90,32 @@ class Form(App):
             message.value = "The length of the text must be shorter or the same length as the key."
             encoded.value = ""
 
+    def update_decoded(self):
+        # Update the decoded value
+        text = self.query_one("#dtext")
+        key = self.query_one("#dkey")
+        decoded = self.query_one("#decoded")
+        message = self.query_one("#dmessage")
+
+        # force upper
+        text.value = text.value.upper()
+        key.value = key.value.upper()
+
+        # TODO: only limit to what is in the otp.alphabet()?
+
+        if len(text.value) <= len(key.value):
+            self.otp.key = key.value
+            message.value, decoded_text = self.otp.decode(text.value)
+            decoded.value = decoded_text
+        else:
+            message.value = "The length of the text must be shorter or the same length as the key."
+            decoded.value = ""
+
     def on_input_changed(self, event: Input.Changed) -> None:
         if event.input.id == "text" or event.input.id == "key":
             self.update_encoded()
+        if event.input.id == "dtext" or event.input.id == "dkey":
+            self.update_decoded()
 
     def action_show_tab(self, tab: str) -> None:
         """Switch to a new tab."""
