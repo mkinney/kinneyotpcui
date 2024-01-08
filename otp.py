@@ -1,18 +1,22 @@
 from textual.app import App, ComposeResult
 from textual.widgets import Footer, Label, Markdown, TabbedContent, TabPane
 
+# TODO: encode form
 ENCODE = """
 Encode form goes here
 """
 
+# TODO: decode form
 DECODE = """
 Decode form goes here
 """
 
+# TODO: generate form
 GENERATE = """
 Generate form goes here
 """
 
+# TODO: settings form
 SETTINGS = """
 Settings goes here
 """
@@ -31,6 +35,7 @@ Tips:
 class OTP(App):
     """One Time Pad"""
 
+    # Note: Using numbers to switch tabs quickly since the default alphabet does not contain numbers.
     BINDINGS = [
         ("1", "show_tab('encode')", "Encode"),
         ("2", "show_tab('decode')", "Decode"),
