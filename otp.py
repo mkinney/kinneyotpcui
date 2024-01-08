@@ -3,12 +3,9 @@ from textual.widgets import Footer, Input, Label, Markdown, TabbedContent, TabPa
 from textual.widget import Widget
 from textual.reactive import reactive
 
-from kinneyotp import OTP
+import random
 
-# TODO: generate form
-GENERATE = """
-Generate form goes here
-"""
+from kinneyotp import OTP
 
 ABOUT = """
 This code is similar to a 'one time pad' (aka Vernam Cipher) which can be used to encode/decode messages.
@@ -58,7 +55,8 @@ class Form(App):
                 yield Input(placeholder="Decoded", disabled=True, id="decoded")
                 yield Input(placeholder="", disabled=True, id="dmessage")
             with TabPane("Generate", id="generate"):
-                yield Markdown(GENERATE)
+                yield Input(placeholder="Seed", id="seed")
+                yield Input(placeholder="Generated", id="generated")
             with TabPane("Settings", id="settings"):
                 yield Input(placeholder="Alphabet", disabled=True, id="alphabet")
             with TabPane("About", id="about"):
@@ -111,11 +109,33 @@ class Form(App):
             message.value = "The length of the text must be shorter or the same length as the key."
             decoded.value = ""
 
+    def update_generate(self):
+        seed = self.query_one("#seed")
+        generated = self.query_one("#generated")
+
+        seed_text = seed.value
+        alphabet = self.otp.alphabet
+        random_text = ''
+        if seed_text != '':
+            random.seed(seed_text)
+            for i in range(1000):
+                x = random.randrange(len(alphabet))
+                random_text += alphabet[x]
+                if i > 1:
+                    if (i+1) % 5 == 0:
+                        random_text += " "
+                    if (i+1) % 25 == 0:
+                        random_text += "\n"
+            generated.value = random_text
+
+
     def on_input_changed(self, event: Input.Changed) -> None:
         if event.input.id == "text" or event.input.id == "key":
             self.update_encoded()
         if event.input.id == "dtext" or event.input.id == "dkey":
             self.update_decoded()
+        if event.input.id == "seed":
+            self.update_generate()
 
     def action_show_tab(self, tab: str) -> None:
         """Switch to a new tab."""
