@@ -21,8 +21,15 @@ pip install textual kinneyotp
 python otp
 ```
 
-# Tips:
+# Tips
 - How to select text to copy:
   * iTerm Hold the OPTION key.
   * Gnome Terminal Hold the SHIFT key.
   * Windows Terminal Hold the SHIFT key.
+
+# For development
+For development, need to install a few more things:
+
+```
+pip install pytest pytest-asyncio
+```

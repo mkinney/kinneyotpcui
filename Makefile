@@ -17,4 +17,7 @@ dockerc: # clean
 push: dockerb
 	docker push mkinney/kinneyotpcui:latest
 
+test:
+	pytest test_otp.py
+
 FORCE: ;
