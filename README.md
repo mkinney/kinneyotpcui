@@ -10,7 +10,7 @@ Character user interface for the kinneyotp (one time pad) module.
 ![about tab](https://github.com/mkinney/kinneyotpcui/blob/main/screens/about.png?raw=true "About")
 
 
-# To install
+# To install locally
 
 ```
 python3 -m venv venv
@@ -20,6 +20,13 @@ pip install textual kinneyotp
 
 python otp
 ```
+
+# To install using docker
+
+```
+docker run -it mkinney/kinneyotpcui
+```
+
 
 # Tips
 - How to select text to copy:
